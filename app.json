@@ -1,5 +1,5 @@
 {
-  "name": "inspection-service",
+  "name": "transcript-service",
   "env": {
     "API_KEY": {
       "generator": "secret",
