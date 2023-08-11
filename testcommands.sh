@@ -1,7 +1,7 @@
 gcloud services enable appengine.googleapis.com
 gcloud services enable firestore.googleapis.com
 
-if [[ $(gcloud app describe 2>&1 || true) == *'ERROR'* ]]; then echo 'No app engine or firestore instances found, creating...' && gcloud app create --region=europe-west && gcloud firestore databases create --region=europe-west; fi
+if [[ $(gcloud app describe 2>&1 || true) == *'ERROR'* ]]; then echo 'No app engine or firestore instances found, creating...' && gcloud app create --region=us-west && gcloud firestore databases create --region=us-west; fi
 
 echo 'Now updating service account with correct permissions..'
 

@@ -1,14 +1,14 @@
 openapi: 3.0.3
 info:
-  description: API for managing safety inspections.
+  description: API for managing transcript summaries.
   version: 0.0.1
-  title: Inspection API
+  title: Transcript API
 servers:
   - url: SERVER_URL
 security:
   - ApiKeyAuth: []
 paths:
-  /inspections:
+  /transcripts:
     get:
       summary: List objects.
       description: Retrieve a page of objects from the server.
@@ -23,7 +23,7 @@ paths:
                   Inspections:
                     type: array
                     items:
-                      $ref: "#/components/schemas/ListOfInspections"
+                      $ref: "#/components/schemas/ListOfTranscripts"
     post:
       summary: Creates a new object.
       description: Creates a new object.
@@ -33,15 +33,15 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Inspection"
+              $ref: "#/components/schemas/Transcript"
       responses:
         "201":
           description: Successful response
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Inspection"
-  /inspections/{id}:
+                $ref: "#/components/schemas/Transcript"
+  /transcripts/{id}:
     get:
       summary: Retrieve object.
       description: Retrieve a single object.
@@ -58,7 +58,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Inspection"
+                $ref: "#/components/schemas/Transcript"
         "404":
           description: Object was not found.
     put:
@@ -77,14 +77,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Inspection"
+              $ref: "#/components/schemas/Transcript"
       responses:
         "200":
           description: Successful response
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Inspection"
+                $ref: "#/components/schemas/Transcript"
         "404":
           description: Object was not found.
     delete:
@@ -109,8 +109,8 @@ components:
       name: x-apikey
       in: header
   schemas:
-    Inspection:
-      title: Inspection
+    Transcript:
+      title: Transcript
       type: object
       properties:
         id:
@@ -125,25 +125,14 @@ components:
           description: The text of the object
           type: string
           example: Example description
-        location:
-          description: The location of the object
+        docSummary:
+          description: A generated summary by the LLM 
           type: string
-          example: Paris, France
-        image:
-          description: An image of the inspection in base64 format
+          example: This is an engaging conversation between two brilliant people
+        file:
+          description: The file path of the document
           type: string
-        extinguishersCount:
-          description: The number of fire extinguishers found in the image
-          type: number
-          example: 2
-        looksSafe:
-          description: An evaluation by the image LLM if the image looks safe or not
-          type: string
-          example: True
-        generatedCaption:
-          description: A generated caption by the LLM of the iamge
-          type: string
-          example: A very safe looking warehouse
+          example: /filepath/example.doc
     ListOfInspections:
       title: List of objects
       type: array
