@@ -18,56 +18,31 @@ creds, project = google.auth.default(
     ]
 )
 
-
-def getImagePrompt(image, prompt1):
+def getDocSummary(doc_string):
     authed_session = AuthorizedSession(creds)
 
     a = datetime.datetime.now()
+    prompt = "Summarize the following conversation. " + doc_string
     response = authed_session.post(
-        url="https://us-central1-aiplatform.googleapis.com/v1/projects/{project}/locations/us-central1/publishers/google/models/imagetext:predict".format(
+        url = "https://us-central1-aiplatform.googleapis.com/v1/projects/{project}/locations/us-central1/publishers/google/models/text-bison:predict".format(
             project=project
         ),
         json={
             "instances": [
-                {
-                    "prompt": prompt1,
-                    "image": {"bytesBase64Encoded": image},
-                }
+                { "prompt": prompt}
             ],
-            "parameters": {"sampleCount": 1},
+            "parameters": {
+                "temperature": 0.2,
+                "maxOutputTokens": 256,
+                "topK": 40,
+                "topP": 0.95
+            }
         },
     )
     b = datetime.datetime.now()
     c = b - a
     logging.error(
-        "{s} ms to q&a prompt with GenAI Vision service.".format(
-            s=c.total_seconds() * 1000
-        )
-    )
-    return response.content
-
-
-def getImageCaption(image):
-    authed_session = AuthorizedSession(creds)
-
-    a = datetime.datetime.now()
-    response = authed_session.post(
-        url="https://us-central1-aiplatform.googleapis.com/v1/projects/{project}/locations/us-central1/publishers/google/models/imagetext:predict".format(
-            project=project
-        ),
-        json={
-            "instances": [
-                {
-                    "image": {"bytesBase64Encoded": image},
-                }
-            ],
-            "parameters": {"sampleCount": 1, "language": "en"},
-        },
-    )
-    b = datetime.datetime.now()
-    c = b - a
-    logging.error(
-        "{s} ms to caption with GenAI Vision service.".format(
+        "{s} ms to summarize with GenAI text-bison service.".format(
             s=c.total_seconds() * 1000
         )
     )
@@ -75,34 +50,9 @@ def getImageCaption(image):
     return response.content
 
 
-def convertImageToBase64(topic, image):
-    imageResult = ""
-
-    if "_Images/" in image:
-        logging.error("Retrieving Google Drive image: " + image)
-
-        a = datetime.datetime.now()
-        imageResult = getImageFromDrive(image.split("/")[-1])
-        b = datetime.datetime.now()
-        c = b - a
-
-        logging.error(
-            "{s} ms to get image from google drive.".format(s=c.total_seconds() * 1000)
-        )
-    elif image.startswith("data:image/png;base64,"):
-        imageResult = image.replace("data:image/png;base64,", "")
-        imageResult = imageResult.split("#filename=", 1)[0]
-    elif image.startswith("data:image/jpeg;base64,"):
-        imageResult = image.replace("data:image/jpeg;base64,", "")
-        imageResult = imageResult.split("#filename=", 1)[0]
-    elif image.startswith("data:image/jpg;base64,"):
-        imageResult = image.replace("data:image/jpg;base64,", "")
-        imageResult = imageResult.split("#filename=", 1)[0]
-
-    return imageResult
-
-
-def getImageFromDrive(name):
+#def getDocFromDrive(name):
+def getDocFromDrive(name):
+    # name = "Transcript test1"
     service = build("drive", "v3", credentials=creds)
     page_token = None
 
@@ -125,7 +75,7 @@ def getImageFromDrive(name):
             print("Found file: " + file.get("name") + " and id: " + file.get("id"))
             request = service.files().get_media(fileId=file.get("id"))
             # fh = io.BytesIO()
-            fh = io.FileIO("image.png", "wb")
+            fh = io.FileIO("doc.txt", "wb")
             downloader = MediaIoBaseDownload(fh, request)
             done = False
             while done is False:
@@ -135,9 +85,10 @@ def getImageFromDrive(name):
             # output["formThumbnail"] = file["thumbnailLink"]
             break
 
-        with open("image.png", "rb") as imageFile:
-            encoded_string = base64.b64encode(imageFile.read()).decode("utf-8")
+        with open("doc.txt", "rb") as docFile:
+            doc_string = docFile.read().decode("utf-8")
+            print("doc string: " + doc_string)
     else:
-        encoded_string = "error"
+        doc_string = "error"
 
-    return encoded_string
+    return doc_string

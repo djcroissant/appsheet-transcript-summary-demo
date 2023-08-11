@@ -14,9 +14,9 @@ from firebase_admin import credentials
 from firebase_admin import firestore
 import google.auth
 
-from app_utils import convertImageToBase64, getImagePrompt, getImageCaption
+from app_utils import getDocFromDrive, getDocSummary
 
-topic = "inspections"
+topic = "transcripts"
 
 urls = ("/{topic}(.*)".format(topic=topic), "datahandler", "/", "openapispec")
 app = web.application(urls, globals())
@@ -59,38 +59,15 @@ class datahandler:
     # Posts a new object to be stored
     def POST(self, name):
         data = json.loads(web.data())
-        imageData = convertImageToBase64(topic, data["image"])
+        doc_string = getDocFromDrive(topic, data["file"])
 
-        if imageData != "error":
-            visionData = json.loads(
-                getImagePrompt(
-                    imageData, "how many fire extinguishers are there in the photo?"
-                )
+        if doc_string != "error":
+            
+            textBisonData = json.loads(
+                getDocSummary(doc_string)
             )
 
-            if "predictions" in visionData:
-                data["extinguishersCount"] = int(visionData["predictions"][0])
-            else:
-                data["extinguishersCount"] = 0
-
-            visionData = json.loads(
-                getImagePrompt(imageData, "does the area look safe?")
-            )
-
-            if "predictions" in visionData and visionData["predictions"][0] == "no":
-                data["looksSafe"] = "False"
-            else:
-                data["looksSafe"] = "True"
-
-            visionCaptionData = json.loads(getImageCaption(imageData))
-            if "predictions" in visionCaptionData:
-                data["generatedCaption"] = (
-                    visionCaptionData["predictions"][0].capitalize() + "."
-                )
-        else:
-            data["extinguishersCount"] = 0
-            data["looksSafe"] = "True"
-            data["generatedCaption"] = "No caption could be generated of this image."
+            data["docSummary"] = textBisonData
 
         self.db.collection(topic).document(data["id"]).set(data)
 
