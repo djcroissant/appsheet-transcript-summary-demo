@@ -59,7 +59,7 @@ class datahandler:
     # Posts a new object to be stored
     def POST(self, name):
         data = json.loads(web.data())
-        doc_string = getDocFromDrive(topic, data["file"])
+        doc_string = getDocFromDrive(data["file"])
 
         if doc_string != "error":
             

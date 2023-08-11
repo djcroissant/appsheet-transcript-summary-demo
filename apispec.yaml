@@ -20,7 +20,7 @@ paths:
               schema:
                 type: object
                 properties:
-                  Inspections:
+                  Transcripts:
                     type: array
                     items:
                       $ref: "#/components/schemas/ListOfTranscripts"
@@ -133,8 +133,8 @@ components:
           description: The file path of the document
           type: string
           example: /filepath/example.doc
-    ListOfInspections:
+    ListOfTranscripts:
       title: List of objects
       type: array
       items:
-        $ref: "#/components/schemas/Inspection"
+        $ref: "#/components/schemas/Transcript"
