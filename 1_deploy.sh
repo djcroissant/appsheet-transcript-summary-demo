@@ -1,10 +1,10 @@
 export PROJECT=$(gcloud config get-value project)
-export LOCATION=europe-west1
-export NAME=inspectionsvc
+export LOCATION=us-west1
+export NAME=transcriptsvc
 
-gcloud builds submit --tag "eu.gcr.io/$PROJECT/$NAME"
+gcloud builds submit --tag "us.gcr.io/$PROJECT/$NAME"
 
-gcloud run deploy $NAME --image eu.gcr.io/$PROJECT/$NAME \
+gcloud run deploy $NAME --image us.gcr.io/$PROJECT/$NAME \
     --platform managed --project $PROJECT \
     --min-instances=1 \
     --region $LOCATION --allow-unauthenticated \
