@@ -47,10 +47,9 @@ def getDocSummary(doc_string):
         )
     )
 
-    return response.content.predictions[0].content
+    return response.content
 
 
-#def getDocFromDrive(name):
 def getDocFromDrive(name):
     # name = "Transcript test1"
     service = build("drive", "v3", credentials=creds)

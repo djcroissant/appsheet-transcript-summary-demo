@@ -68,8 +68,7 @@ class datahandler:
                 getDocSummary(doc_string)
             )
 
-            data["docSummary"] = textBisonData
-            # data["docSummary"] = "textBisonData"
+            data["docSummary"] = textBisonData["predictions"][0]["content"]
 
         self.db.collection(topic).document(data["id"]).set(data)
 
