@@ -3,7 +3,7 @@ export TOKEN=$(gcloud auth print-access-token)
 
 export COUNTER=0
 
-while [ $COUNTER -le 10 ]
+while [ $COUNTER -le 1 ]
 do
     RESULT=$(curl --location --request POST "https://firestore.googleapis.com/v1/projects/$GOOGLE_CLOUD_PROJECT/databases/(default)/documents/transcripts?documentId=b420fdb" \
     --header "Authorization: Bearer $TOKEN" \

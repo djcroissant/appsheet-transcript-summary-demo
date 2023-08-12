@@ -59,15 +59,17 @@ class datahandler:
     # Posts a new object to be stored
     def POST(self, name):
         data = json.loads(web.data())
-        doc_string = getDocFromDrive(data["file"])
+        # doc_string = getDocFromDrive(data["file"])
+        doc_string = "Summarize the following conversation. Service Rep: How may I assist you today? Customer: I need to change the shipping address for an order. Service Rep: Ok, I can help you with that if the order has not been fulfilled from our warehouse yet. But if it has already shipped, then you will need to contact the shipping provider. Do you have the order ID? Customer: Yes, it's 88986367. Service Rep: One minute please while I pull up your order information. Customer: No problem Service Rep: Ok, it looks like your order was shipped from our warehouse 2 days ago. It is now in the hands of  the shipping provider, so you will need to contact them to update your delivery details. You can track your order with the shipping provider here: https://www.shippingprovider.com Customer: Sigh, ok. Service Rep: Is there anything else I can help you with today? Customer: No, thanks."
+        print(doc_string)
         if doc_string != "error":
             
-            # textBisonData = json.loads(
-            #     getDocSummary(doc_string)
-            # )
+            textBisonData = json.loads(
+                getDocSummary(doc_string)
+            )
 
-            # data["docSummary"] = textBisonData
-            data["docSummary"] = "textBisonData"
+            data["docSummary"] = textBisonData
+            # data["docSummary"] = "textBisonData"
 
         self.db.collection(topic).document(data["id"]).set(data)
 
