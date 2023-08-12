@@ -47,7 +47,7 @@ def getDocSummary(doc_string):
         )
     )
 
-    return response.content
+    return response.content.predictions[0].content
 
 
 #def getDocFromDrive(name):
