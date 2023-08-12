@@ -59,15 +59,16 @@ class datahandler:
     # Posts a new object to be stored
     def POST(self, name):
         data = json.loads(web.data())
-        doc_string = getDocFromDrive(data["file"])
-
+        # doc_string = getDocFromDrive(data["file"])
+        doc_string = "hello"
         if doc_string != "error":
             
-            textBisonData = json.loads(
-                getDocSummary(doc_string)
-            )
+            # textBisonData = json.loads(
+            #     getDocSummary(doc_string)
+            # )
 
-            data["docSummary"] = textBisonData
+            # data["docSummary"] = textBisonData
+            data["docSummary"] = "textBisonData"
 
         self.db.collection(topic).document(data["id"]).set(data)
 
