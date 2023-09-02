@@ -121,18 +121,18 @@ components:
           description: The date-time of the object
           type: string
           example: 8/9/2023 9:38:51 AM
-        description:
+        docText:
           description: The text of the object
           type: string
-          example: Example description
+          example: Transcript of entire conversation. This could be very long.
         docSummary:
           description: A generated summary by the LLM 
           type: string
           example: This is an engaging conversation between two brilliant people
-        file:
+        docId:
           description: The file path of the document
           type: string
-          example: /filepath/example.doc
+          example: 1PNXEjDP00Qs-nUIKa1XuTrFvpYrL7anlwgHjyUh-Aqw
     ListOfTranscripts:
       title: List of objects
       type: array
