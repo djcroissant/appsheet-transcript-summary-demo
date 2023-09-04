@@ -13,8 +13,8 @@ do
             'id': {
                 'stringValue': 'b420fdb'
             },
-            'description': {
-                'stringValue': 'Warehouse Main Hall #1'
+            'docText': {
+                'stringValue': 'Transcript of entire conversation'
             },
             'dateTime': {
                 'stringValue': '8/9/2023 9:38:51 AM'
@@ -22,8 +22,8 @@ do
             'docSummary': {
                 'stringValue': 'Summary of doc from text bison'
             },
-            'file': {
-                'stringValue': '/filepath/transcript.txt'
+            'docId': {
+                'stringValue': '1PNXEjDP00Qs-nUIKa1XuTrFvpYrL7anlwgHjyUh-Aqw'
             }
         }
     }")

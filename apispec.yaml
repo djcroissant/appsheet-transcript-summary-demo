@@ -124,7 +124,7 @@ components:
         docText:
           description: The text of the object
           type: string
-          example: Transcript of entire conversation. This could be very long.
+          example: Transcript of entire conversation
         docSummary:
           description: A generated summary by the LLM 
           type: string
